@@ -23,6 +23,12 @@ function App() {
       amount: 450,
       date: new Date(2021, 5, 12),
     },
+    {
+      id: "e5",
+      title: "MacBook Pro",
+      amount: 4450,
+      date: new Date(2021, 9, 18),
+    }
   ];
 
   return (
