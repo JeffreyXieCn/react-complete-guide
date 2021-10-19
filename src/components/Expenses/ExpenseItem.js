@@ -1,17 +1,17 @@
 import "./ExpenseItem.css";
-import {useState} from "react"
+import { useState } from "react";
 import ExpenseDate from "./ExpenseDate";
 import Card from "../UI/Card";
 
 function ExpenseItem(props) {
   // function clickHandler() {}
   const [title, setTitle] = useState(props.title); // each component instance has its own state
-  console.log("ExpenseItem evaluated by React");
+  // console.log("ExpenseItem evaluated by React");
 
   const clickHandler = () => {
-    setTitle('Updated');
+    setTitle("Updated");
     console.log(title);
-  }
+  };
 
   return (
     <Card className="expense-item">
