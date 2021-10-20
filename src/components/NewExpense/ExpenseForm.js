@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useState} from "react";
 import "./ExpenseForm.css";
 
 const ExpenseForm = (props) => {
@@ -52,6 +52,10 @@ const ExpenseForm = (props) => {
     setEnteredDate("");
   };
 
+  function cancelHandler() {
+    props.onCancel();
+  }
+
   return (
     <form onSubmit={submitHandler}>
       <div className="new-expense__controls">
@@ -85,6 +89,7 @@ const ExpenseForm = (props) => {
         </div>
       </div>
       <div className="new-expense__actions">
+        <button onClick={cancelHandler}>Cancel</button>
         <button type="submit">Add Expense</button>
       </div>
     </form>
