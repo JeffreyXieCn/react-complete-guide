@@ -12,9 +12,19 @@ const Login = (props) => {
   const [formIsValid, setFormIsValid] = useState(false);
 
   useEffect(() => {
-    setFormIsValid(
-      enteredEmail.includes('@') && enteredPassword.trim().length > 6
-    );
+    const identifier = setTimeout(() => {
+      console.log("Check form validity!");
+      setFormIsValid(
+        enteredEmail.includes('@') && enteredPassword.trim().length > 6
+      );
+    }, 500);
+
+    return () => { // will be called BEFORE the use effect function being executed. If dependency is empty, will also be
+      // called when the component is removed from the DOM
+      console.log("CLEANUP");
+      clearTimeout(identifier); // so that "Check form validity" won't be called for continuous keystrokes.
+    };
+
   }, [enteredEmail, enteredPassword]);
 
   const emailChangeHandler = (event) => {
