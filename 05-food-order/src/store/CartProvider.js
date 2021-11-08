@@ -14,7 +14,7 @@ const cartReducer = (state, action) => {
     );
     if (existingItemIndex !== -1) {
       // this item already exists in the cart, just update its amount
-      updatedItems = state.items.slice();
+      updatedItems = state.items.slice(); // may also use: updatedItems = [...state.items]
       updatedItems[existingItemIndex].amount += action.item.amount;
     } else {
       // a new item
