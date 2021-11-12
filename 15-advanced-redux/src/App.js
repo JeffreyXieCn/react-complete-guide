@@ -4,9 +4,10 @@ import Products from "./components/Shop/Products";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import Notification from "./components/UI/Notification";
-import { sendCartData } from "./store/cart-slice";
+import { fetchCartData, sendCartData } from "./store/cart-actions";
 
 let isInitial = true;
+let firstCartLoad = false;
 
 function App() {
   const showCart = useSelector((state) => state.ui.cartIsVisible);
@@ -65,8 +66,18 @@ function App() {
       return;
     }
 
+    if (firstCartLoad) {
+      firstCartLoad = false;
+      return;
+    }
+
     dispatch(sendCartData(cart));
   }, [cart, dispatch]);
+
+  useEffect(() => {
+    firstCartLoad = true;
+    dispatch(fetchCartData());
+  }, [dispatch]);
 
   return (
     <>
@@ -78,8 +89,8 @@ function App() {
         />
       )}
       <Layout>
-        {showCart && <Cart />}
-        <Products />
+        {showCart && <Cart/>}
+        <Products/>
       </Layout>
     </>
   );
