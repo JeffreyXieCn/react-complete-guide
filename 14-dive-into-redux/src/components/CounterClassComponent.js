@@ -1,7 +1,7 @@
 import classes from "./Counter.module.css";
 import { connect } from "react-redux";
 import { Component } from "react";
-import { counterActions } from "../store/index";
+import { counterActions } from "../store/counter";
 
 class ClassCounter extends Component {
   incrementHandler() {
