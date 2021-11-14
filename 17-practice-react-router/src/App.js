@@ -3,6 +3,7 @@ import AllQuotes from "./components/pages/AllQuotes";
 import QuoteDetail from "./components/pages/QuoteDetail";
 import NewQuote from "./components/pages/NewQuote";
 import Layout from "./components/layout/Layout";
+import NotFound from "./components/layout/NotFound";
 
 function App() {
   return (
@@ -19,6 +20,9 @@ function App() {
         </Route>
         <Route path="/new-quote">
           <NewQuote />
+        </Route>
+        <Route path="*">
+          <NotFound />
         </Route>
       </Switch>
     </Layout>
