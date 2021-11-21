@@ -5,10 +5,12 @@ import Modal from "./components/Modal/Modal";
 import Backdrop from "./components/Backdrop/Backdrop";
 import List from "./components/List/List";
 import { Transition } from "react-transition-group";
+import ModalWithTransition from "./components/Modal/ModalWithTransition";
 
 class App extends Component {
   state = {
     modalIsOpen: false,
+    transitionModalIsOpen: false,
     showBlock: false,
   };
 
@@ -18,6 +20,14 @@ class App extends Component {
 
   closeModal = () => {
     this.setState({ modalIsOpen: false });
+  };
+
+  showTransitionModal = () => {
+    this.setState({ transitionModalIsOpen: true });
+  };
+
+  closeTransitionModal = () => {
+    this.setState({ transitionModalIsOpen: false });
   };
 
   render() {
@@ -60,9 +70,18 @@ class App extends Component {
         >
           {(state) => <Modal show={state} closed={this.closeModal} />}
         </Transition>
-        {this.state.modalIsOpen && <Backdrop show={this.state.modalIsOpen} />}
+        {this.state.modalIsOpen && <Backdrop show />}
         <button className="Button" onClick={this.showModal}>
           Open Modal
+        </button>
+        <br />
+        <ModalWithTransition
+          show={this.state.transitionModalIsOpen}
+          closed={this.closeTransitionModal}
+        />
+        {this.state.transitionModalIsOpen && <Backdrop show />}
+        <button className="Button" onClick={this.showTransitionModal}>
+          Open Modal Wrapped With Transition
         </button>
         <h3>Animating Lists</h3>
         <List />
