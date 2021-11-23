@@ -21,7 +21,7 @@ const DUMMY_MEETUPS = [
 ];
 
 function HomePage(props) {
-  return <MeetupList meetups={props.meetups} />;
+  return <MeetupList meetups={props.meetups}/>;
 }
 
 // export async function getServerSideProps(context) {
@@ -46,6 +46,8 @@ export async function getStaticProps() {
 
   const meetupsCollection = db.collection("myMeetups");
   const meetups = await meetupsCollection.find().toArray();
+
+  client.close();
 
   return {
     props: {
