@@ -1,5 +1,6 @@
 import MeetUpDetails from "../../components/meetups/MeetupDetails";
 import { MongoClient, ObjectId } from "mongodb";
+import Head from "next/head";
 
 function MeetUpDetail(props) {
   console.log("props:");
@@ -8,12 +9,18 @@ function MeetUpDetail(props) {
   const { image, title, address, description } = props.meetupData;
 
   return (
-    <MeetUpDetails
-      image={image}
-      title={title}
-      address={address}
-      description={description}
-    />
+    <>
+      <Head>
+        <title>{title}</title>
+        <meta name="description" content={description} />
+      </Head>
+      <MeetUpDetails
+        image={image}
+        title={title}
+        address={address}
+        description={description}
+      />
+    </>
   );
 }
 
