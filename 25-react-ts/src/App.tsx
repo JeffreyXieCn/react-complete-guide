@@ -15,7 +15,7 @@ function App() {
   };
 
   function removeTodoHandler(todoId: string) {
-    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id != todoId));
+    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== todoId));
   }
 
   return (
