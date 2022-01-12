@@ -8,3 +8,7 @@
 .task:last-of-type {
     border-bottom: none;
 }
+
+.button {
+    cursor: pointer;
+}
