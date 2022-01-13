@@ -12,7 +12,8 @@ const TaskItem = (props) => {
       <Stack direction="row" alignItems="center" justifyContent="space-between">
         <span>{text}</span>
         <MdDelete
-          className={classes.button}
+          //className={classes.button}
+          style={{ cursor: "pointer" }}
           onClick={async () => {
             await deleteTask(id);
           }}

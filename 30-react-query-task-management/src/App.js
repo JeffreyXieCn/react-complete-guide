@@ -4,8 +4,15 @@ import Tasks from "./components/Tasks/Tasks";
 import NewTask from "./components/NewTask/NewTask";
 import useHttp from "./hooks/use-http";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -39,6 +46,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <NewTask onAddTask={taskAddHandler} />
       <Tasks />
+      <ReactQueryDevtools initialIsOpen />
     </QueryClientProvider>
   );
 }

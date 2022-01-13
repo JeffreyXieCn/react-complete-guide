@@ -8,6 +8,7 @@ export const useGetAllTasks = () => {
 export const useCreateTask = () => {
   const queryClient = useQueryClient();
   return useMutation((payload) => createTask(payload), {
+    // Invalidate and refetch
     onSuccess: () => {
       queryClient.invalidateQueries("tasks");
     },
@@ -18,6 +19,7 @@ export const useDeleteTask = () => {
   const queryClient = useQueryClient();
   return useMutation((taskId) => deleteTask(taskId), {
     onSuccess: () => {
+      // Invalidate and refetch
       queryClient.invalidateQueries("tasks");
     },
   });
