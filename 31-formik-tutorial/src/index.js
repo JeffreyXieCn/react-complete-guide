@@ -1,10 +1,19 @@
 import ReactDOM from "react-dom";
+import SignupFormFormikCustomComponentsBonus from "./SignupFormFormikCustomComponentsBonus";
 // import SignupFormFormikComponents from "./SignupFormFormikComponents";
 // import SignupFormFormikVerbose from "./SignupFormFormikVerbose";
-import SignupFormFormikComponents from "./SignupFormFormikCustomComponents";
+// import SignupFormFormikCustomComponents from "./SignupFormFormikCustomComponents";
 
 function App() {
-  return <SignupFormFormikComponents />;
+  return (
+    <SignupFormFormikCustomComponentsBonus
+      firstName="Jeffrey"
+      lastName="Xie"
+      email="jeffrey.xie@love.code.com"
+      jobType="development"
+    />
+  );
+  // return <SignupFormFormikCustomComponents />;
   // return <SignupFormFormikComponents />;
   // return <SignupFormFormikValidationSchemaAndGetFieldProps />;
   // return <SignupFormFormikVerbose />;

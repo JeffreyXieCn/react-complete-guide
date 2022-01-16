@@ -1,17 +1,35 @@
-import React from "react";
-import { Form, Formik, useField } from "formik";
+import React, { useState } from "react";
+import { Form, Formik, useField, useFormikContext } from "formik";
 import * as Yup from "yup";
 import "./styles.css";
+
+const invalidInputStyle = {
+  // inline style has highest priority
+  border: "2px solid #ff7d87",
+  boxShadow: "none",
+};
 
 const MyTextInput = ({ label, ...props }) => {
   // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
   // which we can spread on <input>. We can use field meta to show an error
   // message if the field is invalid and it has been touched (i.e. visited)
   const [field, meta] = useField(props);
+  const [isFocused, setIsFocused] = useState(false);
+
   return (
     <>
       <label htmlFor={props.id || props.name}>{label}</label>
-      <input className="text-input" {...field} {...props} />
+      <input
+        style={!isFocused && meta.error ? invalidInputStyle : {}}
+        // className={!isFocused && meta.error ? "invalidInput" : ""} // overridden by input[type="text"]
+        {...field}
+        onFocus={() => setIsFocused(true)}
+        onBlur={(event) => {
+          setIsFocused(false);
+          field.onBlur(event);
+        }}
+        {...props}
+      />
       {meta.touched && meta.error ? (
         <div className="error">{meta.error}</div>
       ) : null}
@@ -40,10 +58,21 @@ const MyCheckbox = ({ children, ...props }) => {
 
 const MySelect = ({ label, ...props }) => {
   const [field, meta] = useField(props);
+  const [isFocused, setIsFocused] = useState(false);
+
   return (
     <div>
       <label htmlFor={props.id || props.name}>{label}</label>
-      <select {...field} {...props} />
+      <select
+        style={!isFocused && meta.error ? invalidInputStyle : {}}
+        {...field}
+        onFocus={() => setIsFocused(true)}
+        onBlur={(event) => {
+          setIsFocused(false);
+          field.onBlur(event);
+        }}
+        {...props}
+      />
       {meta.touched && meta.error ? (
         <div className="error">{meta.error}</div>
       ) : null}
@@ -66,18 +95,48 @@ const MySelect = ({ label, ...props }) => {
 //   );
 // };
 
+const MySubmitButton = (props) => {
+  const formikContext = useFormikContext();
+  console.log("formikContext", formikContext);
+
+  return (
+    <button
+      type="submit"
+      disabled={
+        !(formikContext.dirty && formikContext.isValid) ||
+        formikContext.isSubmitting
+      }
+      {...props}
+    />
+  );
+};
+
+// const FormIsSubmitting = () => {
+//   const formikContext = useFormikContext();
+//   console.log("formikContext", formikContext);
+//
+//   return formikContext.isSubmitting;
+// };
+
 // And now we can use these
-const SignupFormFormikCustomComponents = () => {
+const SignupFormFormikCustomComponentsBonus = (props) => {
+  const {
+    firstName = "",
+    lastName = "",
+    email = "",
+    acceptedTerms = false,
+    jobType = "",
+  } = props;
   return (
     <>
       <h1>Subscribe!</h1>
       <Formik
         initialValues={{
-          firstName: "",
-          lastName: "",
-          email: "",
-          acceptedTerms: false, // added for our checkbox
-          jobType: "", // added for our select
+          firstName,
+          lastName,
+          email,
+          acceptedTerms, // added for our checkbox
+          jobType, // added for our select
         }}
         validationSchema={Yup.object({
           firstName: Yup.string()
@@ -140,11 +199,16 @@ const SignupFormFormikCustomComponents = () => {
             I accept the terms and conditions
           </MyCheckbox>
 
-          <button type="submit">Submit</button>
+          {/*<button type="submit" disabled={<FormIsSubmitting />}>*/}
+          {/*  Submit*/}
+          {/*</button>*/}
+
+          <button type="reset">Reset</button>
+          <MySubmitButton>Submit</MySubmitButton>
         </Form>
       </Formik>
     </>
   );
 };
 
-export default SignupFormFormikCustomComponents;
+export default SignupFormFormikCustomComponentsBonus;
