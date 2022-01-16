@@ -1,10 +1,9 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import "./styles.css";
 
-const SignupForm = () => {
+const SignupFormFormikVerbose = () => {
   // A custom validation function. This must return an object
   // which keys are symmetrical to our values/initialValues
   const validate = (values) => {
@@ -91,9 +90,4 @@ const SignupForm = () => {
   );
 };
 
-function App() {
-  return <SignupForm />;
-}
-
-const rootElement = document.getElementById("root");
-ReactDOM.render(<App />, rootElement);
+export default SignupFormFormikVerbose;

@@ -1,10 +1,9 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import "./styles.css";
 
-const SignupForm = () => {
+const SignupFormFormikValidationSchemaAndGetFieldProps = () => {
   return (
     <Formik
       initialValues={{ firstName: "", lastName: "", email: "" }}
@@ -61,9 +60,4 @@ const SignupForm = () => {
   );
 };
 
-function App() {
-  return <SignupForm />;
-}
-
-const rootElement = document.getElementById("root");
-ReactDOM.render(<App />, rootElement);
+export default SignupFormFormikValidationSchemaAndGetFieldProps;
