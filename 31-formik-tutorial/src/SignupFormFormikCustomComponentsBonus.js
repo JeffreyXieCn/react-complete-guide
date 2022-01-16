@@ -2,12 +2,21 @@ import React, { useState } from "react";
 import { Form, Formik, useField, useFormikContext } from "formik";
 import * as Yup from "yup";
 import "./styles.css";
+// import { css, keyframes } from "styled-components";
 
-const invalidInputStyle = {
-  // inline style has highest priority
-  border: "2px solid #ff7d87",
-  boxShadow: "none",
-};
+// const shake = keyframes`
+// 0% { margin-left: 0rem; }
+// 25% { margin-left: 0.5rem; }
+// 75% { margin-left: -0.5rem; }
+// 100% { margin-left: 0rem; }
+// `;
+//
+// const invalidInputStyle = css`
+//   // inline style has highest priority
+//   border: 2px solid #ff7d87;
+//   boxshadow: none;
+//   animation: ${shake} 0.2s ease-in-out 0s 2;
+// `;
 
 const MyTextInput = ({ label, ...props }) => {
   // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
@@ -20,8 +29,8 @@ const MyTextInput = ({ label, ...props }) => {
     <>
       <label htmlFor={props.id || props.name}>{label}</label>
       <input
-        style={!isFocused && meta.error ? invalidInputStyle : {}}
-        // className={!isFocused && meta.error ? "invalidInput" : ""} // overridden by input[type="text"]
+        // style={!isFocused && meta.error ? invalidInputStyle : {}}
+        className={!isFocused && meta.error ? "invalidInput" : ""} // overridden by input[type="text"]
         {...field}
         onFocus={() => setIsFocused(true)}
         onBlur={(event) => {
@@ -64,7 +73,8 @@ const MySelect = ({ label, ...props }) => {
     <div>
       <label htmlFor={props.id || props.name}>{label}</label>
       <select
-        style={!isFocused && meta.error ? invalidInputStyle : {}}
+        // style={!isFocused && meta.error ? invalidInputStyle : {}}
+        className={!isFocused && meta.error ? "invalidInput" : ""}
         {...field}
         onFocus={() => setIsFocused(true)}
         onBlur={(event) => {
