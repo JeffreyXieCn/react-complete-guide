@@ -1,12 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
+import "./styles.css";
 
 const initialValues = {
   friends: [
     {
-      name: "",
-      email: "",
+      name: "Jeffrey",
+      email: "abc123@gmail.com",
+    },
+    {
+      name: "Funny Duck",
+      email: "xyz123@gmail.com",
     },
   ],
 };
