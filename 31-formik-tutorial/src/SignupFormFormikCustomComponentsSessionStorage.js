@@ -1,0 +1,255 @@
+import React, { useState } from "react";
+import { Form, Formik, useField, useFormikContext } from "formik";
+import * as Yup from "yup";
+import "./styles.css";
+// import { css, keyframes } from "styled-components";
+
+// const shake = keyframes`
+// 0% { margin-left: 0rem; }
+// 25% { margin-left: 0.5rem; }
+// 75% { margin-left: -0.5rem; }
+// 100% { margin-left: 0rem; }
+// `;
+//
+// const invalidInputStyle = css`
+//   // inline style has highest priority
+//   border: 2px solid #ff7d87;
+//   boxshadow: none;
+//   animation: ${shake} 0.2s ease-in-out 0s 2;
+// `;
+
+const MyTextInput = ({ label, ...props }) => {
+  // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
+  // which we can spread on <input>. We can use field meta to show an error
+  // message if the field is invalid and it has been touched (i.e. visited)
+  const [field, meta] = useField(props);
+  const [isFocused, setIsFocused] = useState(false);
+
+  return (
+    <>
+      <label htmlFor={props.id || props.name}>{label}</label>
+      <input
+        // style={!isFocused && meta.error ? invalidInputStyle : {}}
+        className={
+          !isFocused && meta.touched && meta.error ? "invalidInput" : ""
+        } // overridden by input[type="text"]
+        {...field}
+        onFocus={() => setIsFocused(true)}
+        onBlur={(event) => {
+          setIsFocused(false);
+          field.onBlur(event);
+        }}
+        onChange={(event) => {
+          sessionStorage.setItem(props.name, event.target.value);
+          field.onChange(event);
+        }}
+        {...props}
+      />
+      {meta.touched && meta.error ? (
+        <div className="error">{meta.error}</div>
+      ) : null}
+    </>
+  );
+};
+
+const MyCheckbox = ({ children, ...props }) => {
+  // React treats radios and checkbox inputs differently other input types, select, and textarea.
+  // Formik does this too! When you specify `type` to useField(), it will
+  // return the correct bag of props for you -- a `checked` prop will be included
+  // in `field` alongside `name`, `value`, `onChange`, and `onBlur`
+  const [field, meta] = useField({ ...props, type: "checkbox" });
+  return (
+    <div>
+      <label className="checkbox-input">
+        <input
+          type="checkbox"
+          {...field}
+          {...props}
+          onChange={(event) => {
+            console.log(event.target.checked);
+            sessionStorage.setItem(props.name, event.target.checked);
+            field.onChange(event);
+          }}
+        />
+        {children}
+      </label>
+      {meta.touched && meta.error ? (
+        <div className="error">{meta.error}</div>
+      ) : null}
+    </div>
+  );
+};
+
+const MySelect = ({ label, ...props }) => {
+  const [field, meta] = useField(props);
+  const [isFocused, setIsFocused] = useState(false);
+
+  return (
+    <div>
+      <label htmlFor={props.id || props.name}>{label}</label>
+      <select
+        // style={!isFocused && meta.error ? invalidInputStyle : {}}
+        className={
+          !isFocused && meta.touched && meta.error ? "invalidInput" : ""
+        }
+        {...field}
+        onFocus={() => setIsFocused(true)}
+        onBlur={(event) => {
+          setIsFocused(false);
+          field.onBlur(event);
+        }}
+        onChange={(event) => {
+          sessionStorage.setItem(props.name, event.target.value);
+          field.onChange(event);
+        }}
+        {...props}
+      />
+      {meta.touched && meta.error ? (
+        <div className="error">{meta.error}</div>
+      ) : null}
+    </div>
+  );
+};
+
+// const MySelect = ({ label, children, ...props }) => {
+//   const [field, meta] = useField(props);
+//   return (
+//     <div>
+//       <label htmlFor={props.id || props.name}>{label}</label>
+//       <select {...field} {...props}>
+//         {children}
+//       </select>
+//       {meta.touched && meta.error ? (
+//         <div className="error">{meta.error}</div>
+//       ) : null}
+//     </div>
+//   );
+// };
+
+const MySubmitButton = (props) => {
+  const formikContext = useFormikContext();
+  // console.log("formikContext", formikContext);
+
+  return (
+    <button
+      type="submit"
+      disabled={
+        !(formikContext.dirty && formikContext.isValid) ||
+        formikContext.isSubmitting
+      }
+      {...props}
+    />
+  );
+};
+
+// const FormIsSubmitting = () => {
+//   const formikContext = useFormikContext();
+//   console.log("formikContext", formikContext);
+//
+//   return formikContext.isSubmitting;
+// };
+
+// And now we can use these
+const SignupFormFormikCustomComponentsSessionStorage = () => {
+  console.log("Enter SignupFormFormikCustomComponentsSessionStorage");
+
+  const values = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    acceptedTerms: false,
+    jobType: "",
+  };
+
+  Object.keys(values).forEach((key) => {
+    if (sessionStorage.getItem(key)) {
+      values[key] = sessionStorage.getItem(key);
+    }
+  });
+
+  console.log(typeof values.acceptedTerms);
+  console.log(values.acceptedTerms);
+
+  if (typeof values.acceptedTerms === "string") {
+    values.acceptedTerms = values.acceptedTerms === "true";
+  }
+
+  return (
+    <>
+      <h1>Subscribe!</h1>
+      <Formik
+        initialValues={values}
+        validationSchema={Yup.object({
+          firstName: Yup.string()
+            .max(15, "Must be 15 characters or less")
+            .required("Required"),
+          lastName: Yup.string()
+            .max(20, "Must be 20 characters or less")
+            .required("Required"),
+          email: Yup.string()
+            .email("Invalid email address")
+            .required("Required"),
+          acceptedTerms: Yup.boolean()
+            .required("Required")
+            .oneOf([true], "You must accept the terms and conditions."),
+          jobType: Yup.string()
+            .oneOf(
+              ["designer", "development", "product", "other"],
+              "Invalid Job Type"
+            )
+            .required("Required"),
+        })}
+        onSubmit={(values, { setSubmitting }) => {
+          setTimeout(() => {
+            alert(JSON.stringify(values, null, 2));
+            setSubmitting(false);
+          }, 400);
+        }}
+      >
+        <Form>
+          <MyTextInput
+            label="First Name"
+            name="firstName"
+            type="text"
+            placeholder="Jane"
+          />
+
+          <MyTextInput
+            label="Last Name"
+            name="lastName"
+            type="text"
+            placeholder="Doe"
+          />
+
+          <MyTextInput
+            label="Email Address"
+            name="email"
+            type="email"
+            placeholder="jane@formik.com"
+          />
+
+          <MySelect label="Job Type" name="jobType">
+            <option value="">Select a job type</option>
+            <option value="designer">Designer</option>
+            <option value="development">Developer</option>
+            <option value="product">Product Manager</option>
+            <option value="other">Other</option>
+          </MySelect>
+
+          <MyCheckbox name="acceptedTerms">
+            I accept the terms and conditions
+          </MyCheckbox>
+
+          {/*<button type="submit" disabled={<FormIsSubmitting />}>*/}
+          {/*  Submit*/}
+          {/*</button>*/}
+
+          <button type="reset">Reset</button>
+          <MySubmitButton>Submit</MySubmitButton>
+        </Form>
+      </Formik>
+    </>
+  );
+};
+
+export default SignupFormFormikCustomComponentsSessionStorage;
