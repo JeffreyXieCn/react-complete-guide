@@ -1,7 +1,7 @@
 import classes from "./AvailableMeals.module.css";
-import Card from "../UI/Card";
 import MealItem from "./MealItem/MealItem";
 import { useEffect, useState } from "react";
+import Card from "@mui/material/Card/Card";
 
 const AvailableMeals = () => {
   const [meals, setMeals] = useState([]);
@@ -67,11 +67,9 @@ const AvailableMeals = () => {
     />
   ));
   return (
-    <section className={classes.meals}>
-      <Card>
-        <ul>{mealsList}</ul>
-      </Card>
-    </section>
+    <Card>
+      <ul>{mealsList}</ul>
+    </Card>
   );
 };
 

@@ -1,13 +1,16 @@
-import { Fragment } from "react";
 import MealsSummary from "./MealsSummary";
 import AvailableMeals from "./AvailableMeals";
+import Container from "@mui/material/Container/Container";
+import Stack from "@mui/material/Stack/Stack";
 
 const Meals = () => {
   return (
-    <Fragment>
-      <MealsSummary />
-      <AvailableMeals />
-    </Fragment>
+    <Container>
+      <Stack spacing={3}>
+        <MealsSummary />
+        <AvailableMeals />
+      </Stack>
+    </Container>
   );
 };
 
